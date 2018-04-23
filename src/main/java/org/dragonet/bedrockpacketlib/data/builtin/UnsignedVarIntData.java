@@ -1,5 +1,5 @@
 /*
- * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/DragonProxy).
+ * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/BedrockPacketLib).
  * Copyright (c) 2018 Dragonet Foundation.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,8 @@
 package org.dragonet.bedrockpacketlib.data.builtin;
 
 import org.dragonet.bedrockpacketlib.data.AbstractBedrockPacketData;
-import org.dragonet.bedrockpacketlib.util.VarIntUtils;
+import org.dragonet.bedrockpacketlib.util.type.UnsignedVarIntUtils;
+import org.dragonet.bedrockpacketlib.util.type.VarIntUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,13 +27,13 @@ import java.io.IOException;
 public class UnsignedVarIntData extends AbstractBedrockPacketData<Long> {
 
     @Override
-    protected void toStream(ByteArrayOutputStream outputStream, Long value) throws IOException {
-        VarIntUtils.writeUnsignedVarInt(outputStream, value);
+    protected void writeToStream(ByteArrayOutputStream outputStream, Long value) throws IOException {
+        UnsignedVarIntUtils.writeToStream(outputStream, value);
     }
 
     @Override
-    protected Long fromStream(ByteArrayInputStream inputStream) throws IOException {
-        return VarIntUtils.readUnsignedVarInt(inputStream);
+    protected Long readFromStream(ByteArrayInputStream inputStream) throws IOException {
+        return UnsignedVarIntUtils.readFromStream(inputStream);
     }
 
 }

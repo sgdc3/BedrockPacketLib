@@ -14,25 +14,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.dragonet.bedrockpacketlib.data.builtin;
+package org.dragonet.bedrockpacketlib.util.type;
 
-import org.dragonet.bedrockpacketlib.data.AbstractBedrockPacketData;
-import org.dragonet.bedrockpacketlib.util.type.LLongUtils;
+import lombok.experimental.UtilityClass;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-public class LLongData extends AbstractBedrockPacketData<Long> {
+@UtilityClass
+public class UnsignedVarIntUtils {
 
-    @Override
-    protected void writeToStream(ByteArrayOutputStream outputStream, Long value) throws IOException {
-        LLongUtils.writeToStream(outputStream, value);
+    public long readFromStream(InputStream inputStream) throws IOException {
+        return VarTypeUtils.readFromStream(inputStream, 5);
     }
 
-    @Override
-    protected Long readFromStream(ByteArrayInputStream inputStream) throws IOException {
-        return LLongUtils.readFromStream(inputStream);
+    public void writeToStream(OutputStream outputStream, long value) throws IOException {
+        VarTypeUtils.writeToStream(outputStream, value);
     }
 
 }

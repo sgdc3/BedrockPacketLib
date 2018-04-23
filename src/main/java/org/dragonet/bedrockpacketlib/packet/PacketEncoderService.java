@@ -1,5 +1,5 @@
 /*
- * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/DragonProxy).
+ * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/BedrockPacketLib).
  * Copyright (c) 2018 Dragonet Foundation.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ import org.dragonet.bedrockpacketlib.data.AbstractBedrockPacketData;
 import org.dragonet.bedrockpacketlib.exception.BedrockDecodePacketException;
 import org.dragonet.bedrockpacketlib.exception.BedrockEncodePacketException;
 import org.dragonet.bedrockpacketlib.util.ReflectionUtils;
-import org.dragonet.bedrockpacketlib.util.VarIntUtils;
+import org.dragonet.bedrockpacketlib.util.type.UnsignedVarIntUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -51,7 +51,7 @@ public class PacketEncoderService {
                 value.encode(encoded);
             } catch (Throwable e) {
                 throw new BedrockEncodePacketException("Unable to encode the packet field value "
-                        + packet.getClass().getSimpleName() + "@" + field.getName());
+                    + packet.getClass().getSimpleName() + "@" + field.getName());
             }
         }
         return encoded;
@@ -61,12 +61,12 @@ public class PacketEncoderService {
         Objects.requireNonNull(encoded);
         byte packetId;
         try {
-            packetId = (byte) VarIntUtils.readUnsignedVarInt(encoded);
+            packetId = (byte) UnsignedVarIntUtils.readFromStream(encoded);
         } catch (IOException e) {
             throw new BedrockDecodePacketException("Unable to read the packetId!", e);
         }
         Class<? extends AbstractBedrockPacket> packetClass = packetRegister.getPacketClass(packetId)
-                .orElseThrow(() -> new BedrockDecodePacketException("Missing packet type with id " + packetId));
+            .orElseThrow(() -> new BedrockDecodePacketException("Missing packet type with id " + packetId));
         AbstractBedrockPacket packet;
         try {
             packet = packetClass.newInstance();
@@ -85,7 +85,7 @@ public class PacketEncoderService {
                 value.decode(encoded);
             } catch (IllegalAccessException | IOException e) {
                 throw new BedrockDecodePacketException("Unable to decode the packet field value "
-                        + packet.getClass().getSimpleName() + "@" + field.getName());
+                    + packet.getClass().getSimpleName() + "@" + field.getName());
             }
         }
         return packet;

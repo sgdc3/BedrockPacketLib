@@ -1,5 +1,5 @@
 /*
- * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/DragonProxy).
+ * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/BedrockPacketLib).
  * Copyright (c) 2018 Dragonet Foundation.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 package org.dragonet.bedrockpacketlib.data.builtin;
 
 import org.dragonet.bedrockpacketlib.data.AbstractBedrockPacketData;
+import org.dragonet.bedrockpacketlib.util.type.ByteArrayUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,18 +26,14 @@ import java.nio.charset.StandardCharsets;
 
 public class StringData extends AbstractBedrockPacketData<String> {
 
-    private final static ByteArrayData BYTE_ARRAY = new ByteArrayData();
-
     @Override
-    protected void toStream(ByteArrayOutputStream outputStream, String value) throws IOException {
-        BYTE_ARRAY.set(value.getBytes(StandardCharsets.UTF_8));
-        BYTE_ARRAY.encode(outputStream);
+    protected void writeToStream(ByteArrayOutputStream outputStream, String value) throws IOException {
+        ByteArrayUtils.writeToStream(outputStream, value.getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
-    protected String fromStream(ByteArrayInputStream inputStream) throws IOException {
-        BYTE_ARRAY.decode(inputStream);
-        return new String(BYTE_ARRAY.get(), StandardCharsets.UTF_8);
+    protected String readFromStream(ByteArrayInputStream inputStream) throws IOException {
+        return new String(ByteArrayUtils.readFromStream(inputStream), StandardCharsets.UTF_8);
     }
 
 }

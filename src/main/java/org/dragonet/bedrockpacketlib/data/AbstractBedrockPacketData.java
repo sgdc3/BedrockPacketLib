@@ -1,5 +1,5 @@
 /*
- * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/DragonProxy).
+ * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/BedrockPacketLib).
  * Copyright (c) 2018 Dragonet Foundation.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,16 +48,16 @@ public abstract class AbstractBedrockPacketData<T> {
     }
 
     public final void encode(@NonNull ByteArrayOutputStream outputStream) throws IOException {
-        toStream(outputStream, get());
+        writeToStream(outputStream, get());
     }
 
-    protected abstract void toStream(ByteArrayOutputStream outputStream, T value) throws IOException;
+    protected abstract void writeToStream(ByteArrayOutputStream outputStream, T value) throws IOException;
 
     public final void decode(@NonNull ByteArrayInputStream inputStream) throws IOException {
-        set(fromStream(inputStream));
+        set(readFromStream(inputStream));
         initialized = true;
     }
 
-    protected abstract T fromStream(ByteArrayInputStream inputStream) throws IOException;
+    protected abstract T readFromStream(ByteArrayInputStream inputStream) throws IOException;
 
 }

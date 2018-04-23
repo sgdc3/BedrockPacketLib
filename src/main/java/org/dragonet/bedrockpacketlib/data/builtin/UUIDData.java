@@ -1,5 +1,5 @@
 /*
- * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/DragonProxy).
+ * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/BedrockPacketLib).
  * Copyright (c) 2018 Dragonet Foundation.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 package org.dragonet.bedrockpacketlib.data.builtin;
 
 import org.dragonet.bedrockpacketlib.data.AbstractBedrockPacketData;
+import org.dragonet.bedrockpacketlib.util.type.LLongUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -25,17 +26,15 @@ import java.util.UUID;
 
 public class UUIDData extends AbstractBedrockPacketData<UUID> {
 
-    private final static LLongData L_LONG = new LLongData();
-
     @Override
-    protected void toStream(ByteArrayOutputStream outputStream, UUID value) throws IOException {
-        L_LONG.toStream(outputStream, value.getMostSignificantBits());
-        L_LONG.toStream(outputStream, value.getLeastSignificantBits());
+    protected void writeToStream(ByteArrayOutputStream outputStream, UUID value) throws IOException {
+        LLongUtils.writeToStream(outputStream, value.getMostSignificantBits());
+        LLongUtils.writeToStream(outputStream, value.getLeastSignificantBits());
     }
 
     @Override
-    protected UUID fromStream(ByteArrayInputStream inputStream) throws IOException {
-        return new UUID(L_LONG.fromStream(inputStream), L_LONG.fromStream(inputStream));
+    protected UUID readFromStream(ByteArrayInputStream inputStream) throws IOException {
+        return new UUID(LLongUtils.readFromStream(inputStream), LLongUtils.readFromStream(inputStream));
     }
 
 }

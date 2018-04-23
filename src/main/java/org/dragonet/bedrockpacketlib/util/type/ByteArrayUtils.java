@@ -14,25 +14,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.dragonet.bedrockpacketlib.data.builtin;
+package org.dragonet.bedrockpacketlib.util.type;
 
-import org.dragonet.bedrockpacketlib.data.AbstractBedrockPacketData;
-import org.dragonet.bedrockpacketlib.util.type.LLongUtils;
+import lombok.experimental.UtilityClass;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-public class LLongData extends AbstractBedrockPacketData<Long> {
+@UtilityClass
+public class ByteArrayUtils {
 
-    @Override
-    protected void writeToStream(ByteArrayOutputStream outputStream, Long value) throws IOException {
-        LLongUtils.writeToStream(outputStream, value);
+    public void writeToStream(OutputStream outputStream, byte[] byteArray) throws IOException {
+        UnsignedVarIntUtils.writeToStream(outputStream, byteArray.length);
+        outputStream.write(byteArray);
     }
 
-    @Override
-    protected Long readFromStream(ByteArrayInputStream inputStream) throws IOException {
-        return LLongUtils.readFromStream(inputStream);
+    public byte[] readFromStream(InputStream inputStream) throws IOException {
+        byte[] byteArray = new byte[(int) UnsignedVarIntUtils.readFromStream(inputStream)];
+        if (inputStream.read(byteArray) != byteArray.length) {
+            throw new IOException("Unexpected end of stream!");
+        }
+        return byteArray;
     }
 
 }

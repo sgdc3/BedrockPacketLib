@@ -1,5 +1,5 @@
 /*
- * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/DragonProxy).
+ * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/BedrockPacketLib).
  * Copyright (c) 2018 Dragonet Foundation.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,15 +25,8 @@ import java.lang.reflect.Field;
 public class ReflectionUtils {
 
     public <T> T readField(@NonNull Field field, @NonNull Object object, @NonNull Class<T> type) throws IllegalAccessException {
-        boolean forced = !field.isAccessible();
-        if (forced) {
-            field.setAccessible(true);
-        }
-        T value = type.cast(field.get(object));
-        if (forced) {
-            field.setAccessible(false);
-        }
-        return value;
+        field.setAccessible(true);
+        return type.cast(field.get(object));
     }
 
 }

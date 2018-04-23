@@ -1,5 +1,5 @@
 /*
- * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/DragonProxy).
+ * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/BedrockPacketLib).
  * Copyright (c) 2018 Dragonet Foundation.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,10 +44,10 @@ public class PacketRegister {
     private void registerBuiltinPackets() {
         Reflections reflections = new Reflections(getClass().getPackage().getName() + ".builtin");
         reflections.getSubTypesOf(AbstractBedrockPacket.class).stream()
-                .filter(packetClass -> !packetClass.isInterface() && !Modifier.isAbstract(packetClass.getModifiers()))
-                .forEach(packetClass -> {
-                    AnnotationUtils.handleMandatory(packetClass, BedrockPacketInfo.class,
-                            annotation -> registerPacket(annotation.packetId(), packetClass));
-                });
+            .filter(packetClass -> !packetClass.isInterface() && !Modifier.isAbstract(packetClass.getModifiers()))
+            .forEach(packetClass -> {
+                registerPacket(AnnotationUtils.getMandatory(packetClass, BedrockPacketInfo.class).packetId(), packetClass);
+            });
     }
+
 }

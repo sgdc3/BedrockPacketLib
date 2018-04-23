@@ -1,5 +1,5 @@
 /*
- * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/DragonProxy).
+ * This file is part of the BedrockPacketLib distribution (https://github.com/DragonetMC/BedrockPacketLib).
  * Copyright (c) 2018 Dragonet Foundation.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@ import lombok.experimental.UtilityClass;
 
 import java.lang.annotation.Annotation;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 @UtilityClass
 public class AnnotationUtils {
@@ -32,21 +31,7 @@ public class AnnotationUtils {
 
     public <A extends Annotation> A getMandatory(Class<?> subjectClass, Class<A> annotationClass) {
         return get(subjectClass, annotationClass).orElseThrow(() -> new IllegalStateException(subjectClass.getSimpleName()
-                + " is missing the mandatory @" + annotationClass.getSimpleName() + " annotation!"));
-    }
-
-    public <A extends Annotation> void handle(@NonNull Class<?> subjectClass, @NonNull Class<A> annotationClass, @NonNull Consumer<A> ifPresent, @NonNull Runnable ifAbsent) {
-        Optional<A> annotation = get(subjectClass, annotationClass);
-        if (annotation.isPresent()) {
-            ifPresent.accept(annotation.get());
-        } else {
-            ifAbsent.run();
-        }
-    }
-
-    public <A extends Annotation> void handleMandatory(@NonNull Class<?> subjectClass, @NonNull Class<A> annotationClass, @NonNull Consumer<A> action) {
-        action.accept(get(subjectClass, annotationClass).orElseThrow(() -> new IllegalStateException(subjectClass.getSimpleName()
-                + " is missing the mandatory @" + annotationClass.getSimpleName() + " annotation!")));
+            + " is missing the mandatory @" + annotationClass.getSimpleName() + " annotation!"));
     }
 
 }
